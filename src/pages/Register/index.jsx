@@ -1,34 +1,31 @@
 import { useState } from "react";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
 import arrowImg from "../../assets/arrow.svg";
 import logoImg from "../../assets/logo.svg";
 import { auth } from "../../services/firebaseConfig";
 import "./styles.css";
 
-export function Login() {
+export function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
 
-  function handleSignIn(e) {
+  function handleSignOut(e) {
     e.preventDefault();
-    signInWithEmailAndPassword(email, password);
+    createUserWithEmailAndPassword(email, password);
   }
 
   if (loading) {
     return <p>carregando...</p>;
   }
-  if (user) {
-    return console.log(user);
-  }
   return (
     <div className="container">
       <header className="header">
         <img src={logoImg} alt="Workflow" className="logoImg" />
-        <span>Por favor digite suas informações de login</span>
+        <span>Por favor digite suas informações de cadastro</span>
       </header>
 
       <form>
@@ -54,14 +51,12 @@ export function Login() {
           />
         </div>
 
-        <a href="#">Esqueceu sua senha ?</a>
-
-        <button className="button" onClick={handleSignIn}>
-          Entrar <img src={arrowImg} alt="->" />
+        <button onClick={handleSignOut} className="button">
+          Cadastrar <img src={arrowImg} alt="->" />
         </button>
         <div className="footer">
-          <p>Você não tem uma conta?</p>
-          <Link to="/register">Crie a sua conta aqui</Link>
+          <p>Você já tem uma conta?</p>
+          <Link to="/">Acesse sua conta aqui</Link>
         </div>
       </form>
     </div>
